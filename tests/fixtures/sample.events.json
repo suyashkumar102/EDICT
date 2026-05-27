@@ -1,0 +1,52 @@
+[
+  {
+    "eventId": "01HZA0AAAAAAAAAAAAAAAAAA01",
+    "subreddit": "edictplayground",
+    "occurredAt": 1700000000000,
+    "actor": "mod-alice",
+    "payload": {
+      "kind": "RuleDrafted",
+      "ruleId": "rule-allcaps",
+      "englishSource": "Lock any post whose title is in all caps.",
+      "title": "Lock all-caps titles",
+      "description": "discourages shouting"
+    }
+  },
+  {
+    "eventId": "01HZA0BBBBBBBBBBBBBBBBBB02",
+    "subreddit": "edictplayground",
+    "occurredAt": 1700000000500,
+    "actor": "mod-alice",
+    "payload": {
+      "kind": "RuleCompiled",
+      "ruleId": "rule-allcaps",
+      "version": 2,
+      "clauses": [
+        {
+          "clauseName": "caps",
+          "when": {
+            "kind": "atom",
+            "fact": "titleAllCaps",
+            "comparator": { "kind": "isTrue" },
+            "atomId": "CAPS01"
+          },
+          "verdict": { "kind": "lock" }
+        }
+      ],
+      "confidence": 0.97,
+      "diffSummary": "initial compile"
+    }
+  },
+  {
+    "eventId": "01HZA0CCCCCCCCCCCCCCCCCC03",
+    "subreddit": "edictplayground",
+    "occurredAt": 1700000001000,
+    "actor": "mod-alice",
+    "payload": {
+      "kind": "RuleActivated",
+      "ruleId": "rule-allcaps",
+      "version": 2,
+      "enteringPhase": "shadowed"
+    }
+  }
+]

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EDICT — Privacy Policy</title>
+    <!-- Canonical URL is set when the docs are pushed to GitHub Pages.
+         Update <github-owner> before `devvit publish --public`. -->
+    <link rel="canonical" href="https://example.invalid/edict/legal/privacy.html" />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        max-width: 720px;
+        margin: 3rem auto;
+        padding: 0 1.25rem;
+        font: 16px/1.55 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+      }
+      h1, h2 {
+        line-height: 1.2;
+      }
+      h1 {
+        margin-bottom: 0.25rem;
+      }
+      .meta {
+        color: #666;
+        margin-top: 0;
+        font-size: 0.9rem;
+      }
+      a {
+        color: #0a5ed7;
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid #ddd;
+        margin: 2rem 0;
+      }
+      code {
+        background: #f3f3f3;
+        padding: 0 0.3em;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>EDICT — Privacy Policy</h1>
+    <p class="meta">Last updated: 2026-05-25 · Applies to all installations of the EDICT Devvit app.</p>
+
+    <h2>1. What we store</h2>
+    <ul>
+      <li>
+        <strong>Rule sources and compiled JSON.</strong> The English rule
+        text a moderator typed, the compiled clause tree, and the rule&rsquo;s
+        full lifecycle (drafted, compiled, activated, promoted, paused,
+        archived).
+      </li>
+      <li>
+        <strong>Audit entries for evaluations.</strong> When a rule
+        evaluates against a post or comment, EDICT records: the rule ID,
+        the matched clause name, the captured fact-bag values (e.g.
+        <code>postBodyLength</code>, <code>authorKarmaTotal</code>), the
+        resulting verdict, and a rollback token. EDICT does not store
+        post or comment bodies verbatim &mdash; only the derived fact-bag
+        slots the rule actually read.
+      </li>
+      <li>
+        <strong>Reversal fingerprints.</strong> When a moderator reverses
+        an action, EDICT stores a DJB2 hash of the fact-pattern that
+        fired, so future similar patterns are deprioritized. The hash
+        cannot be reversed back into the original post text.
+      </li>
+    </ul>
+
+    <h2>2. Where it&rsquo;s stored</h2>
+    <p>
+      All data lives in Devvit&rsquo;s hosted Redis, scoped per app
+      installation. Each subreddit&rsquo;s data is isolated by Devvit&rsquo;s
+      multi-tenancy boundary &mdash; no install can read another&rsquo;s data.
+      EDICT does not run a separate backend service.
+    </p>
+
+    <h2>3. What we send to third parties</h2>
+    <ul>
+      <li>
+        <strong>OpenAI</strong> &mdash; at rule-edit time only. The plain-English
+        sentence a moderator wrote, EDICT&rsquo;s structured-output schema,
+        and a handful of compiler exemplars are sent to
+        <code>api.openai.com</code>. No post body, comment body, or user
+        identifier is ever sent. OpenAI&rsquo;s data-handling terms apply
+        to that payload.
+      </li>
+    </ul>
+    <p>
+      EDICT does not contact any other third party. The full
+      <code>http.permissions.domains</code> allowlist in
+      <code>devvit.json</code> is one entry: <code>api.openai.com</code>.
+    </p>
+
+    <h2>4. Retention</h2>
+    <p>
+      Audit entries persist for the configured <code>rollbackWindowDays</code>
+      (default 30) plus a 90-day analytics tail, then a nightly compaction
+      job trims them. Rule definitions persist until a moderator archives
+      the rule. Reversal-fingerprint hashes have no automatic expiry but
+      can be cleared with <code>npm run replay -- --reset-learning</code>.
+    </p>
+
+    <h2>5. Your data rights as a subreddit member</h2>
+    <p>
+      If you posted or commented in a subreddit running EDICT and want
+      to know whether a moderator action was taken by EDICT, an EDICT
+      audit entry for your post is accessible to the subreddit&rsquo;s
+      moderators via the Command Center&rsquo;s <em>Explain this decision</em>
+      menu item. Contact the subreddit&rsquo;s mod team if you need an
+      explanation; mods can also use the rollback workflow to undo an
+      EDICT action within the rollback window.
+    </p>
+
+    <h2>6. Children</h2>
+    <p>
+      EDICT is not directed at children under 13. Use of EDICT is bound
+      by Reddit&rsquo;s underlying age requirements for the platform.
+    </p>
+
+    <h2>7. Changes</h2>
+    <p>
+      We will update this page when the data EDICT handles, the third
+      parties it talks to, or the retention windows change. The
+      &ldquo;Last updated&rdquo; date at the top of this page reflects the most
+      recent change.
+    </p>
+
+    <hr />
+    <p class="meta">
+      Terms of service: <a href="./tos.html">tos.html</a> · Source code:
+      see project README.
+    </p>
+  </body>
+</html>

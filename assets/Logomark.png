@@ -1,0 +1,5 @@
+This file is a placeholder. Before publishing the Devvit app, replace
+`assets/Logomark.png` (referenced by `devvit.json`'s
+`marketingAssets.icon`) with the 256×256 production logomark.
+
+See `assets/BRAND.md` for design notes.

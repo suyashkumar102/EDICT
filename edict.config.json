@@ -1,0 +1,31 @@
+{
+  "$schema": "./tooling/edict-config.schema.json",
+  "fetchDomains": ["api.openai.com", "generativelanguage.googleapis.com"],
+  "legal": {
+    "_comment": "Replace <github-owner> with the actual GitHub org/user before `devvit publish --public`. See documentation/CUT-LIST.md for the deploy checklist.",
+    "tosUrl": "https://<github-owner>.github.io/edict/legal/tos.html",
+    "privacyUrl": "https://<github-owner>.github.io/edict/legal/privacy.html"
+  },
+  "compiler": {
+    "defaultProvider": "openai",
+    "providers": {
+      "openai": {
+        "endpoint": "https://api.openai.com/v1/chat/completions",
+        "models": ["gpt-5.4", "gpt-5.4-mini", "gpt-5.4-nano"],
+        "approvedBy": "Reddit Devvit AI provider policy (PR #96)"
+      },
+      "gemini": {
+        "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+        "models": ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite"],
+        "approvedBy": "Reddit Devvit AI provider policy (PR #96)",
+        "notes": "Free-tier eligible. Function-calling parameter schemas are passed as shallow OpenAPI-3.0 shapes (Gemini does not support $ref / oneOf / additionalProperties); deep validation runs server-side via Zod after the response lands."
+      }
+    },
+    "policyNote": "OpenAI and Gemini are on Reddit's approved AI provider list (PR #96). Anthropic is not — see documentation/CUT-LIST.md hard lock #4."
+  },
+  "tagline": "Speak it. Sandbox it. Send it. Undo it.",
+  "marketing": {
+    "primaryTagline": "EDICT — English-declared, inspected, compiled, traced.",
+    "shortPitch": "Type a moderation rule in English. EDICT compiles it, tests it on your sub's last 30 days, runs it in shadow until it's safe, and gives you 30-day undo on everything it does."
+  }
+}

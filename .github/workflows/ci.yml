@@ -1,0 +1,85 @@
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+# Concurrency: cancel in-progress runs on the same branch so a quick
+# follow-up push doesn't queue stale builds.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    name: gate (typecheck · lint · format · test · arch · acceptance · doctor)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          # Pinned to match `.nvmrc` and Devvit's `>=22.2.0` engine.
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint (zero warnings)
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Tests (unit + property + integration)
+        run: npm run verify
+
+      - name: Architecture (dependency-cruiser layer enforcement)
+        run: npm run verify:architecture
+
+      - name: Acceptance gates (G1–G4)
+        run: npm run acceptance
+
+      - name: Doctor (devvit.json / permissions / routes integrity)
+        run: npm run doctor
+
+      - name: Build (vite + tsc emit check)
+        run: npm run build
+
+  coverage:
+    name: coverage thresholds
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: gate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      - name: Coverage (lines/functions/branches/statements + per-file ceilings)
+        run: npm run verify:coverage
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 14

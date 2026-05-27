@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EDICT — Terms of Service</title>
+    <!-- Canonical URL is set when the docs are pushed to GitHub Pages.
+         Update <github-owner> before `devvit publish --public`. -->
+    <link rel="canonical" href="https://example.invalid/edict/legal/tos.html" />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        max-width: 720px;
+        margin: 3rem auto;
+        padding: 0 1.25rem;
+        font: 16px/1.55 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+      }
+      h1, h2 {
+        line-height: 1.2;
+      }
+      h1 {
+        margin-bottom: 0.25rem;
+      }
+      .meta {
+        color: #666;
+        margin-top: 0;
+        font-size: 0.9rem;
+      }
+      a {
+        color: #0a5ed7;
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid #ddd;
+        margin: 2rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>EDICT — Terms of Service</h1>
+    <p class="meta">Last updated: 2026-05-25 · Applies to all installations of the EDICT Devvit app.</p>
+
+    <h2>1. What EDICT is</h2>
+    <p>
+      EDICT is a moderation tool installed by subreddit moderators on Reddit
+      via Devvit (Reddit&rsquo;s developer platform). It compiles English-language
+      moderation rules into a deterministic decision tree, evaluates them
+      against posts and comments submitted to the subreddit where it is
+      installed, and either records the result (shadow mode) or carries
+      it out via Reddit&rsquo;s moderator APIs (live mode).
+    </p>
+
+    <h2>2. Who can use it</h2>
+    <p>
+      Only subreddit moderators (verified by Reddit&rsquo;s permission model)
+      may install EDICT, compose or activate rules, or invoke its menu
+      actions. EDICT performs an additional moderator re-check on every
+      request before executing any state-changing action.
+    </p>
+
+    <h2>3. Data EDICT handles</h2>
+    <ul>
+      <li>
+        <strong>Rule text and metadata.</strong> The plain-English sentences
+        a moderator types, the resulting compiled JSON, and the audit log
+        of rule lifecycle events. Stored in Devvit&rsquo;s installation-scoped
+        Redis. EDICT does not transmit rule text off the platform except
+        to OpenAI (see §5).
+      </li>
+      <li>
+        <strong>Per-decision audit entries.</strong> When a rule fires, EDICT
+        records the matched clause, captured fact-bag values, and the
+        action taken. Audit entries are kept for the configured rollback
+        window (default 30 days) and an additional 90-day analytics tail.
+      </li>
+      <li>
+        <strong>Reversal patterns.</strong> When a moderator reverses an
+        EDICT action, the matching fact-pattern is hashed (DJB2) and the
+        hash is stored to deprioritize similar future matches. The
+        original post and comment IDs are not stored alongside the hash.
+      </li>
+    </ul>
+
+    <h2>4. Actions EDICT can take</h2>
+    <p>
+      EDICT can <code>report</code>, <code>flair</code>, <code>lock</code>,
+      <code>sendToModQueue</code>, <code>approve</code>, <code>sticky</code>,
+      <code>distinguish</code>, <code>commentReply</code>, and
+      <code>modmailNotify</code> by default. Higher-impact actions
+      (<code>remove</code>, <code>mute</code>, <code>ban</code>, contributor
+      add/remove) are gated behind an explicit per-rule opt-in at compile
+      time and may additionally require a second moderator&rsquo;s consensus.
+    </p>
+
+    <h2>5. AI provider (OpenAI)</h2>
+    <p>
+      EDICT calls OpenAI&rsquo;s API only at rule-edit time &mdash; never on
+      user-submitted post or comment content. The compiler receives the
+      English sentence the moderator wrote plus EDICT&rsquo;s schema, and
+      returns a structured JSON rule. No post or comment body is ever
+      sent to OpenAI. The API key is stored as a Devvit secret and is
+      visible only to subreddit moderators with secret-set permission.
+    </p>
+
+    <h2>6. Liability and warranty</h2>
+    <p>
+      EDICT is provided as-is, with no warranty of any kind. Moderation
+      decisions remain the responsibility of the moderators who installed
+      and configured the app. The author(s) of EDICT accept no liability
+      for actions taken, missed, or reversed by the app.
+    </p>
+
+    <h2>7. Removing the app</h2>
+    <p>
+      A moderator may uninstall EDICT at any time from the subreddit&rsquo;s
+      app management page. Uninstallation halts all rule evaluation
+      immediately. Past audit entries persist in the installation&rsquo;s
+      Redis until the next rollback-window sweep.
+    </p>
+
+    <hr />
+    <p class="meta">
+      Privacy policy: <a href="./privacy.html">privacy.html</a> · Source
+      code: see project README.
+    </p>
+  </body>
+</html>

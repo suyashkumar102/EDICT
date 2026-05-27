@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build output
+distribution/
+
+# Test coverage
+coverage/
+
+# Devvit local state
+.devvit/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local environment — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Editor config
+.vscode/
+.idea/
+
+# TypeScript incremental build
+*.tsbuildinfo
+
+# Cache
+.cache/
+
+# Screenshots and local dev images — not part of the submission
+Screenshot*.png
+Screenshot*.jpg
+*.screenshot.png
+*.screenshot.jpg
+
+# Temporary debug/fix scripts
+tooling/_*.py
+tooling/_*.ts

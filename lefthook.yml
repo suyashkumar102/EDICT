@@ -1,0 +1,28 @@
+# Lefthook git hooks for EDICT.
+# Lefthook is a Go-based hook runner (https://lefthook.dev) chosen for its
+# parallel execution model — `pre-commit` lint and format jobs fan out across
+# CPU cores rather than running serially the way npm-script wrappers do.
+#
+# Apply: `npm run prepare` (runs `lefthook install`).
+# Bypass once: `LEFTHOOK=0 git commit ...` (do not use --no-verify).
+
+pre-commit:
+  parallel: true
+  commands:
+    eslint:
+      glob: '*.ts'
+      run: npx eslint --fix --max-warnings 0 {staged_files}
+      stage_fixed: true
+    prettier:
+      glob: '*.{ts,js,json,md,yml,yaml}'
+      run: npx prettier --write {staged_files}
+      stage_fixed: true
+
+pre-push:
+  commands:
+    typecheck:
+      run: npm run typecheck
+    verify:
+      run: npm run verify
+    architecture:
+      run: npm run verify:architecture
