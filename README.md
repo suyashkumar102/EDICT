@@ -1,3 +1,5 @@
+<img width="1774" height="887" alt="EDICT_Banner" src="https://github.com/user-attachments/assets/d9275be2-10a4-47a7-bdc6-7ced26338fa1" />
+
 # EDICT
 
 **English-Declared, Inspected, Compiled, Traced.**
